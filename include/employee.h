@@ -16,11 +16,20 @@ struct employee {
     _Bool is_male;                          // 1 байт
     char first_name[FIRST_NAME_STR_LEN];    // 16 байт
 };                                          // 64 байта
+struct array {
+    struct employee *array;
+    size_t used;
+    size_t size;
+};
 typedef struct employee employee;
+typedef struct array array;
 
-employee *employee_list;
+void init_array(array *a, size_t initialSize);
+void insert_array(array *a, employee element);
+void free_array(array *a);
 
 int read_employees_number_from_file(char *file_name);
-int read_employees_from_file(char *file_name, int employees_number, employee *employee_list);
+int read_employees_from_file(char *file_name, int employees_number, array *employee_list);
+
 
 #endif //TP_CPP_IZ2_EMPLOYEE_H

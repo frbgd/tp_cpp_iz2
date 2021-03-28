@@ -1,6 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "../include/employee.h"
+
+void init_array(array *a, size_t initial_size) {
+    a->array = malloc(initial_size * sizeof(employee));
+    a->used = 0;
+    a->size = initial_size;
+}
+
+void insert_array(array *a, employee element) {
+    if (a->used == a->size) {
+        a->size *= 2;
+        a->array = realloc(a->array, a->size * sizeof(employee));
+    }
+    a->array[a->used++] = element;
+}
+
+void free_array(array *a) {
+    free(a->array);
+    a->array = NULL;
+    a->used = a->size = 0;
+}
 
 int read_employees_number_from_file(char *file_name) {
     FILE *f = fopen(file_name, "rb");
@@ -22,7 +43,7 @@ int read_employees_number_from_file(char *file_name) {
     return employees_number;
 }
 
-int read_employees_from_file(char *file_name, int employees_number, employee *employee_list) {
+int read_employees_from_file(char *file_name, int employees_number, array *employee_list) {
     FILE *f = fopen(file_name, "rb");
     if (!f) {
         fprintf(stderr, "Failed to open file for read\n");
@@ -31,10 +52,12 @@ int read_employees_from_file(char *file_name, int employees_number, employee *em
 
     fseek(f, FILE_HEADER_SIZE, SEEK_SET);
     for(int i = 0; i < employees_number; i++) {
-        if (fread(&employee_list[i], sizeof(employee), 1, f) != 1) {
+        employee emp;
+        if (fread(&emp, sizeof(employee), 1, f) != 1) {
             fprintf(stderr, "Failed to read employees\n");
             return -1;
         }
+        insert_array(employee_list, emp);
     }
 
     if (fclose(f)) {
