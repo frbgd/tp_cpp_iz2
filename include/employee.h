@@ -5,6 +5,8 @@
 #define SECOND_NAME_STR_LEN 23
 #define FIRST_NAME_STR_LEN 16
 
+#define FILE_HEADER_SIZE 16
+
 struct employee {
     char position[POSITION_STR_LEN];        // 16 байт
     unsigned short age;                     // 2 байта

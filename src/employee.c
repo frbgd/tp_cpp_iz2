@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include "../include/employee.h"
 
-#define FILE_HEADER_SIZE 16
-
 int read_employees_number_from_file(char *file_name) {
     FILE *f = fopen(file_name, "rb");
     if (!f) {
