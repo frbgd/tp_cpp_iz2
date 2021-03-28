@@ -16,6 +16,8 @@ struct employee {
 };                                          // 64 байта
 typedef struct employee employee;
 
+employee *employee_list;
+
 unsigned read_employees_number_from_file(char *file_name);
 unsigned read_employees_from_file(char *file_name, employee *employee_list);
 
