@@ -8,13 +8,13 @@ int main() {
     if (employees_number < 0) {
         return -1;
     }
-    array employee_list;
+    employee_array employee_list;
     init_array(&employee_list, employees_number);
     if (read_employees_from_file(file_name, employees_number, &employee_list) != 0) {
         return -1;
     }
 
-
+    
 
     free_array(&employee_list);
     return 0;
