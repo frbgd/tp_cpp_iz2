@@ -14,8 +14,19 @@ int main() {
         return -1;
     }
 
-    
+    struct employee_array search_result;
+    init_array(&search_result, ARRAY_INIT_SIZE);
+    search(&employee_list, &search_result);
 
+    for(int i = 0; i < search_result.used; i++){
+        printf("%s %d %d %d %s %d %s\n",
+               search_result.array[i].position, search_result.array[i].age,
+               search_result.array[i].work_experience, search_result.array[i].salary,
+               search_result.array[i].second_name, search_result.array[i].is_male,
+               search_result.array[i].first_name);
+    }
+
+    free_array(&search_result);
     free_array(&employee_list);
     return 0;
 }

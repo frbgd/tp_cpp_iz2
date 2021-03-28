@@ -66,3 +66,53 @@ int read_employees_from_file(char *file_name, int employees_number, employee_arr
     }
     return 0;
 }
+
+int match_position(employee_array *arr, char *target_position) {
+    for (int i = 0; i < arr->used; i++) {
+        if (strcmp(arr->array[i].position, target_position) == 0)
+            return 1;
+    }
+    return 0;
+}
+
+void search(employee_array *empl_list, employee_array *result) {
+    // собираем список профессий
+    employee_array positions;
+    init_array(&positions, ARRAY_INIT_SIZE);
+    for (int i = 0; i < empl_list->used; i++) {
+        if (match_position(&positions, empl_list->array[i].position) == 0) {
+            insert_array(&positions, empl_list->array[i]);
+        }
+    }
+
+    // для каждой профессии ищем минимальный возраст
+    for (int i = 0; i < positions.used; i++) {
+        unsigned short min_age = 1000;
+        employee min_age_employee;
+        for (int j = 0; j < empl_list->used; j++) {
+            if (strcmp(empl_list->array[j].position, positions.array[i].position) == 0
+            && empl_list->array[j].age < min_age) {
+                min_age_employee = empl_list->array[j];
+                min_age = min_age_employee.age;
+            }
+        }
+        if (min_age < 1000)
+            insert_array(result, min_age_employee);
+    }
+    // для каждой профессии ищем максимальный возраст
+    for (int i = 0; i < positions.used; i++) {
+        unsigned short max_age = 0;
+        employee max_age_employee;
+        for (int j = 0; j < empl_list->used; j++) {
+            if (strcmp(empl_list->array[j].position, positions.array[i].position) == 0
+            && empl_list->array[j].age > max_age) {
+                max_age_employee = empl_list->array[j];
+                max_age = max_age_employee.age;
+            }
+        }
+        if (max_age > 0)
+            insert_array(result, max_age_employee);
+    }
+
+    free_array(&positions);
+}

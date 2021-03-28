@@ -5,6 +5,8 @@
 #define SECOND_NAME_STR_LEN 23
 #define FIRST_NAME_STR_LEN 16
 
+#define ARRAY_INIT_SIZE 10
+
 #define FILE_HEADER_SIZE 16
 
 struct employee {
@@ -31,5 +33,6 @@ void free_array(employee_array *a);
 int read_employees_number_from_file(char *file_name);
 int read_employees_from_file(char *file_name, int employees_number, employee_array *employee_list);
 
+void search(employee_array *empl_list, employee_array *result);
 
 #endif //TP_CPP_IZ2_EMPLOYEE_H
