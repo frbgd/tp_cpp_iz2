@@ -17,6 +17,6 @@ struct employee {
 typedef struct employee employee;
 
 unsigned read_employees_number_from_file(char *file_name);
-unsigned read_employee_from_file(char *file_name, employee *employee_list);
+unsigned read_employees_from_file(char *file_name, employee *employee_list);
 
 #endif //TP_CPP_IZ2_EMPLOYEE_H

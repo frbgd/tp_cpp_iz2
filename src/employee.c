@@ -23,7 +23,7 @@ unsigned read_employees_number_from_file(char *file_name) {
     return employees_number;
 }
 
-unsigned read_employee_from_file(char *file_name, employee *employee_list) {
+unsigned read_employees_from_file(char *file_name, employee *employee_list) {
     FILE *f = fopen(file_name, "rb");
 
     if (!f) {
