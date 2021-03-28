@@ -13,6 +13,7 @@ struct employee {
     char second_name[SECOND_NAME_STR_LEN];  // 23 байта
     _Bool is_male;                          // 1 байт
     char first_name[FIRST_NAME_STR_LEN];    // 16 байт
-};                                          // всего 64 байта
+};                                          // 64 байта
+typedef struct employee employee;
 
 #endif //TP_CPP_IZ2_EMPLOYEE_H
