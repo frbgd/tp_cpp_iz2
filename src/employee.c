@@ -3,6 +3,9 @@
 #include <string.h>
 #include "../include/employee.h"
 
+const unsigned short INIT_MIN_AGE = 1000;
+const unsigned short INIT_MAX_AGE = 0;
+
 void init_array(employee_array *a, size_t initial_size) {
     a->array = malloc(initial_size * sizeof(employee));
     a->used = 0;
@@ -101,7 +104,7 @@ void search(employee_array *empl_list, employee_array *result) {
 
     // для каждой профессии ищем минимальный возраст
     for (int i = 0; i < positions.used; i++) {
-        unsigned short min_age = 1000;
+        unsigned short min_age = INIT_MIN_AGE;
         employee min_age_employee;
         for (int j = 0; j < empl_list->used; j++) {
             if (strcmp(empl_list->array[j].position, positions.array[i].position) == 0
@@ -110,14 +113,14 @@ void search(employee_array *empl_list, employee_array *result) {
                 min_age = min_age_employee.age;
             }
         }
-        if (min_age < 1000)
+        if (min_age < INIT_MIN_AGE)
             insert_array(result, min_age_employee);
     }
     // для каждой профессии ищем максимальный возраст
     for (int i = 0; i < positions.used; i++) {
-        unsigned short max_age = 0;
+        unsigned short max_age = INIT_MAX_AGE;
         employee max_age_employee;
-        for (int j = 0; j < empl_list->used; j++) {
+        for (int j = INIT_MAX_AGE; j < empl_list->used; j++) {
             if (strcmp(empl_list->array[j].position, positions.array[i].position) == 0
             && empl_list->array[j].age > max_age) {
                 max_age_employee = empl_list->array[j];
