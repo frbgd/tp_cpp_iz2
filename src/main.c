@@ -18,7 +18,7 @@ int main() {
     init_array(&search_result, ARRAY_INIT_SIZE);
     search(&employee_list, &search_result);
 
-    for(int i = 0; i < search_result.used; i++){
+    for(size_t i = 0; i < search_result.used; i++){
         printf("%s %d %d %d %s %d %s\n",
                search_result.array[i].position, search_result.array[i].age,
                search_result.array[i].work_experience, search_result.array[i].salary,
