@@ -75,6 +75,20 @@ int match_position(employee_array *arr, char *target_position) {
     return 0;
 }
 
+void sort_by_second_name(employee_array *arr) {
+    employee temp;
+
+    for (int i=0; i <= arr->used; i++) {
+        for (int j = i + 1; j <= arr->used; j++) {
+            if (strcmp(arr->array[i].second_name, arr->array[j].second_name) > 0) {
+                temp = arr->array[i];
+                arr->array[i] = arr->array[j];
+                arr->array[j] = temp;
+            }
+        }
+    }
+}
+
 void search(employee_array *empl_list, employee_array *result) {
     // собираем список профессий
     employee_array positions;
@@ -113,6 +127,7 @@ void search(employee_array *empl_list, employee_array *result) {
         if (max_age > 0)
             insert_array(result, max_age_employee);
     }
+    sort_by_second_name(result);
 
     free_array(&positions);
 }
