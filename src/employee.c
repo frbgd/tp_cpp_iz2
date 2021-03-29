@@ -120,14 +120,14 @@ void search(employee_array *empl_list, employee_array *result) {
     for (int i = 0; i < positions.used; i++) {
         unsigned short max_age = INIT_MAX_AGE;
         employee max_age_employee;
-        for (int j = INIT_MAX_AGE; j < empl_list->used; j++) {
+        for (int j = 0; j < empl_list->used; j++) {
             if (strcmp(empl_list->array[j].position, positions.array[i].position) == 0
             && empl_list->array[j].age > max_age) {
                 max_age_employee = empl_list->array[j];
                 max_age = max_age_employee.age;
             }
         }
-        if (max_age > 0)
+        if (max_age > INIT_MAX_AGE)
             insert_array(result, max_age_employee);
     }
     sort_by_second_name(result);
