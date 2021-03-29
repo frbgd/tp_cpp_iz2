@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "../include/employee.h"
 
-void search(employee_array *empl_list, employee_array *result) {
+int search(employee_array *empl_list, employee_array *result) {
     // собираем список профессий
     employee_array positions;
     init_array(&positions, ARRAY_INIT_SIZE);
@@ -17,19 +17,27 @@ void search(employee_array *empl_list, employee_array *result) {
 
     // параллелим алгоритм по количеству найденных профессий
     int processes_number = positions.used;
+    // готовим массив pipe'ов
     int pipe_arr[processes_number][2];
 
     int* pid_list = malloc(processes_number * sizeof(int));
     int pid = -1, status, pid_list_iter = 0;
     for (int i = 0; i < processes_number; i++) {
         if (pipe(pipe_arr[i]) == -1){
-            // TODO return with panic
+            fprintf(stderr, "Failed to create pipe\n");
+            return -1;
         }
 
         pid = fork();
-        if (pid > 0) {
+        if (pid < 0 ) {
+            fprintf(stderr, "Failed to fork child\n");
+            return -1;
+        } else if (pid > 0) {
+            close(pipe_arr[i][1]);
             pid_list[pid_list_iter++] = pid;
         } else if (pid == 0) {
+            close(pipe_arr[i][0]);
+
             // выделяем локальный массив результатов
             employee proc_result[2];
             char target_position[POSITION_STR_LEN];
@@ -66,7 +74,7 @@ void search(employee_array *empl_list, employee_array *result) {
     }
 
     // вычитываем результаты из pipe'ов
-        for (int i = 0; i < processes_number; i++) {
+    for (int i = 0; i < processes_number; i++) {
         employee proc_result[2];
         read(pipe_arr[i][0], proc_result, sizeof(employee) * 2);
         insert_array(result, proc_result[0]);
@@ -78,7 +86,8 @@ void search(employee_array *empl_list, employee_array *result) {
     do {
         pid_t waited_pid = waitpid(pid_list[pid_list_iter], &status, WNOHANG);
         if (waited_pid < 0) {
-            // TODO return with panic
+            fprintf(stderr, "Failed to wait child\n");
+            return -1;
         }
 
         if (waited_pid) {
