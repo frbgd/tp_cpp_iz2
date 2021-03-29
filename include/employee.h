@@ -9,6 +9,9 @@
 
 #define FILE_HEADER_SIZE 16
 
+const unsigned short INIT_MIN_AGE = 1000;
+const unsigned short INIT_MAX_AGE = 0;
+
 struct employee {
     char position[POSITION_STR_LEN];        // 16 байт
     unsigned short age;                     // 2 байта
@@ -33,6 +36,8 @@ void free_array(employee_array *a);
 int read_employees_number_from_file(char *file_name);
 int read_employees_from_file(char *file_name, int employees_number, employee_array *employee_list);
 
+int match_position(employee_array *arr, char *target_position);
+void sort_by_second_name(employee_array *arr);
 void search(employee_array *empl_list, employee_array *result);
 
 #endif //TP_CPP_IZ2_EMPLOYEE_H
