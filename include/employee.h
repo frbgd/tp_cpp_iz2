@@ -9,8 +9,8 @@
 
 #define FILE_HEADER_SIZE 16
 
-const unsigned short INIT_MIN_AGE = 1000;
-const unsigned short INIT_MAX_AGE = 0;
+#define INIT_MIN_AGE 1000;
+#define INIT_MAX_AGE 0;
 
 struct employee {
     char position[POSITION_STR_LEN];        // 16 байт

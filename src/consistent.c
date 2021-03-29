@@ -22,8 +22,7 @@ void search(employee_array *empl_list, employee_array *result) {
                 min_age = min_age_employee.age;
             }
         }
-        if (min_age < INIT_MIN_AGE)
-            insert_array(result, min_age_employee);
+        insert_array(result, min_age_employee);
     }
     // для каждой профессии ищем максимальный возраст
     for (size_t i = 0; i < positions.used; i++) {
@@ -36,8 +35,7 @@ void search(employee_array *empl_list, employee_array *result) {
                 max_age = max_age_employee.age;
             }
         }
-        if (max_age > INIT_MAX_AGE)
-            insert_array(result, max_age_employee);
+        insert_array(result, max_age_employee);
     }
     sort_by_second_name(result);
 
