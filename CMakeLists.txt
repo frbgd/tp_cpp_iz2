@@ -3,6 +3,7 @@ project(tp_cpp_iz2)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDART_REQURED ON)
+set(ENABLE_EXPORTS 1)
 
 set(CMAKE_C_FLAGS "-g -O0 -Wall -Werror -Wextra -fprofile-arcs -ftest-coverage")
 set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
@@ -14,4 +15,6 @@ add_library(EmployeeDynamic SHARED include/employee.h src/employee.c src/paralle
 target_include_directories(EmployeeDynamic PUBLIC include)
 
 add_executable(prog src/main.c)
-target_link_libraries(prog EmployeeDynamic)
+target_link_libraries(prog EmployeeStatic)
+target_link_libraries(prog EmployeeDynamic ${CMAKE_DL_LIBS})
+
