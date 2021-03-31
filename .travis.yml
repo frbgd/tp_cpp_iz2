@@ -16,8 +16,7 @@ before_script:
 
 jobs:
   include:
-    - stage: stress_tests
-      name: "Run stress_tests"
+    - stage: stress_test
+      name: "Run stress_test"
       script:
-        - ./stress_tests
-
+        - ./stress_test
