@@ -38,8 +38,6 @@ int search(employee_array *empl_list, employee_array *result) {
         } else if (pid == 0) {
             close(pipe_arr[i][0]);
 
-            // выделяем локальный массив результатов
-            employee proc_result[2];
             char target_position[POSITION_STR_LEN];
             strcpy(target_position, positions.array[i].position);
 
@@ -53,7 +51,7 @@ int search(employee_array *empl_list, employee_array *result) {
                     min_age = min_age_employee.age;
                 }
             }
-            proc_result[0] = min_age_employee;
+            write(pipe_arr[i][1], &min_age_employee, sizeof(employee));
 
             // ищем максимального сотрудника для текущей профессии (под индексом i)
             unsigned short max_age = INIT_MAX_AGE;
@@ -65,9 +63,7 @@ int search(employee_array *empl_list, employee_array *result) {
                     max_age = max_age_employee.age;
                 }
             }
-            proc_result[1] = max_age_employee;
-
-            write(pipe_arr[i][1], proc_result, sizeof(employee) * 2);
+            write(pipe_arr[i][1], &max_age_employee, sizeof(employee));
 
             exit(0);
         }
@@ -75,10 +71,11 @@ int search(employee_array *empl_list, employee_array *result) {
 
     // вычитываем результаты из pipe'ов
     for (int i = 0; i < processes_number; i++) {
-        employee proc_result[2];
-        read(pipe_arr[i][0], proc_result, sizeof(employee) * 2);
-        insert_array(result, proc_result[0]);
-        insert_array(result, proc_result[1]);
+        employee proc_result;
+        read(pipe_arr[i][0], &proc_result, sizeof(employee));
+        insert_array(result, proc_result);
+        read(pipe_arr[i][0], &proc_result, sizeof(employee));
+        insert_array(result, proc_result);
     }
 
     // ждём завершения процессов
