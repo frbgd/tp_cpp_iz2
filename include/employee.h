@@ -31,6 +31,7 @@ typedef struct employee_array employee_array;
 
 void init_array(employee_array *a, size_t initialSize);
 void insert_array(employee_array *a, employee element);
+void slice_array(employee_array *input, employee_array *output, size_t start_index, size_t size);
 void free_array(employee_array *a);
 
 int read_employees_number_from_file(char *file_name);

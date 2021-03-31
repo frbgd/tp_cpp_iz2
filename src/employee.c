@@ -17,6 +17,17 @@ void insert_array(employee_array *a, employee element) {
     a->array[a->used++] = element;
 }
 
+void slice_array(employee_array *input, employee_array *output, size_t start_index, size_t size) {
+    for(size_t i = start_index; i < start_index + size; i++) {
+        insert_array(output, input->array[i]);
+    }
+    if (input->used - start_index - size < size) {
+        for(size_t i = start_index + size; i < input->used; i++) {
+            insert_array(output, input->array[i]);
+        }
+    }
+}
+
 void free_array(employee_array *a) {
     free(a->array);
     a->array = NULL;

@@ -14,7 +14,6 @@ target_include_directories(EmployeeStatic PUBLIC include)
 add_library(EmployeeDynamic SHARED include/employee.h src/employee.c src/parallel.c)
 target_include_directories(EmployeeDynamic PUBLIC include)
 
-add_executable(prog src/main.c)
-target_link_libraries(prog EmployeeStatic)
-target_link_libraries(prog EmployeeDynamic ${CMAKE_DL_LIBS})
-
+add_executable(stress_test tests/stress_test.c)
+target_link_libraries(stress_test EmployeeStatic)
+target_link_libraries(stress_test EmployeeDynamic ${CMAKE_DL_LIBS})
