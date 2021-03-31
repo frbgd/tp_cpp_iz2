@@ -1,7 +1,7 @@
 #include <string.h>
 #include "../include/employee.h"
 
-void search(employee_array *empl_list, employee_array *result) {
+int search(employee_array *empl_list, employee_array *result) {
     // собираем список профессий
     employee_array positions;
     init_array(&positions, ARRAY_INIT_SIZE);
@@ -40,4 +40,6 @@ void search(employee_array *empl_list, employee_array *result) {
     sort_by_second_name(result);
 
     free_array(&positions);
+
+    return 0;
 }

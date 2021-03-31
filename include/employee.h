@@ -38,6 +38,6 @@ int read_employees_from_file(char *file_name, int employees_number, employee_arr
 
 int match_position(employee_array *arr, char *target_position);
 void sort_by_second_name(employee_array *arr);
-void search(employee_array *empl_list, employee_array *result);
+int search(employee_array *empl_list, employee_array *result);
 
 #endif //TP_CPP_IZ2_EMPLOYEE_H

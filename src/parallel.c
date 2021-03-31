@@ -1,8 +1,8 @@
 #include <string.h>
 #include <stdlib.h>
-#include <zconf.h>
 #include <wait.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "../include/employee.h"
 
 int search(employee_array *empl_list, employee_array *result) {
@@ -99,4 +99,6 @@ int search(employee_array *empl_list, employee_array *result) {
 
     sort_by_second_name(result);
     free_array(&positions);
+
+    return 0;
 }
