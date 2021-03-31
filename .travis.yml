@@ -1,0 +1,22 @@
+language: cpp
+dist: bionic
+sudo: true
+compiler: gcc
+
+addons:
+  apt:
+    packages:
+      - cmake
+
+before_script:
+  - mkdir build && cd build
+  - cmake ..
+  - make
+  - cp ../tests/test_data* .
+
+jobs:
+  include:
+    - stage: stress_tests
+      name: "Run stress_tests"
+      script:
+        - ./stress_tests
