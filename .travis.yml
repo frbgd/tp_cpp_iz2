@@ -26,7 +26,7 @@ jobs:
       script:
         - cppcheck --inconclusive --enable=all --language=c ../include/* ../src/*.c ../tests/*.c
         - cppcheck --inconclusive --enable=all --language=c++ ../tests/*.cpp
-        - cpplint --headers=h --linelength=110 --filter=-runtime/int,-legal/copyright,-build/include_subdir,-build/include --extensions=cpp,h ../tests/*
+        - cpplint --headers=h --linelength=110 --filter=-runtime/int,-legal/copyright,-build/include_subdir,-build/include --extensions=cpp ../tests/*
 
     - stage: stress_test
       name: "Run stress test"
