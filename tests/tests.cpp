@@ -225,6 +225,27 @@ TEST(employees, CorrectPositionEmployees) {
 }
 
 TEST(employees, CorrectSecondNamesSort) {
+    employee_array employee_list;
+    int employees_number = 1000;
+    init_array(&employee_list, employees_number);
+    int read_result = read_employees_from_file(
+            const_cast<char*>("test_data1k.bin"),
+            employees_number,
+            &employee_list);
+    ASSERT_EQ(read_result, 0);
+
+    employee_array search_result;
+    init_array(&search_result, ARRAY_INIT_SIZE);
+
+    int result = search(&employee_list, &search_result);
+    ASSERT_EQ(result, 0);
+
+    for (int i = 0; i < search_result.used - 1; i++) {
+        ASSERT_TRUE(strcmp(search_result.array[i].second_name, search_result.array[i+1].second_name) <= 0);
+    }
+
+    free_array(&search_result);
+    free_array(&employee_list);
 }
 
 int main(int argc, char** argv) {
