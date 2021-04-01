@@ -29,13 +29,13 @@ struct employee_array {
 typedef struct employee employee;
 typedef struct employee_array employee_array;
 
-void init_array(employee_array *a, size_t initialSize);
+void init_array(employee_array *a, size_t initial_size);
 void insert_array(employee_array *a, employee element);
 void slice_array(employee_array *input, employee_array *output, size_t start_index, size_t size);
 void free_array(employee_array *a);
 
 int read_employees_number_from_file(char *file_name);
-int read_employees_from_file(char *file_name, int employees_number, employee_array *employee_list);
+int read_employees_from_file(char *file_name, int employees_number, employee_array *arr);
 
 int match_position(employee_array *arr, char *target_position);
 void sort_by_second_name(employee_array *arr);

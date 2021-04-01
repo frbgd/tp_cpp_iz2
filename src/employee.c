@@ -44,6 +44,7 @@ int read_employees_number_from_file(char *file_name) {
     int employees_number = 0;
     if (fread(&employees_number, sizeof(unsigned), 1, f) != 1) {
         fprintf(stderr, "Failed to read employees number\n");
+        fclose(f);
         return -1;
     }
 

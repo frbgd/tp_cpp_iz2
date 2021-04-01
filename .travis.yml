@@ -7,6 +7,7 @@ addons:
   apt:
     packages:
       - cmake
+      - cppcheck
 
 before_script:
   - mkdir build && cd build
@@ -16,6 +17,11 @@ before_script:
 
 jobs:
   include:
+    - stage: static_analisys
+      name: "Static analisys"
+      script:
+        - cppcheck --inconclusive --enable=all --language=c ../include/* ../src/*.c ../tests/*.c
+
     - stage: stress_test
       name: "Run stress_test"
       script:

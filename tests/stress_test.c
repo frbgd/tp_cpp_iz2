@@ -16,10 +16,8 @@ int main() {
         return 1;
     }
 
-    struct employee_array static_search_result;
-    init_array(&static_search_result, ARRAY_INIT_SIZE);
-    struct employee_array dynamic_search_result;
-    init_array(&dynamic_search_result, ARRAY_INIT_SIZE);
+    struct employee_array search_result;
+    init_array(&search_result, ARRAY_INIT_SIZE);
 
     // from dynamic library
     void *ext_library;
@@ -32,7 +30,7 @@ int main() {
     }
     searchfunc = dlsym(ext_library, "search");
     clock_t begin = clock();
-    int result = (*searchfunc)(&employee_list, &dynamic_search_result);
+    int result = (*searchfunc)(&employee_list, &search_result);
     clock_t end = clock();
     if (result != 0) {
         dlclose(ext_library);
@@ -42,17 +40,19 @@ int main() {
     double time_spent = (double)(end - begin);
     printf("dynamic lib - %f\n", time_spent);
 
+    free_array(&search_result);
+    init_array(&search_result, ARRAY_INIT_SIZE);
+
     // from static library
     begin = clock();
-    result = search(&employee_list, &static_search_result);
+    result = search(&employee_list, &search_result);
     end = clock();
     if (result != 0)
         return 1;
     time_spent = (double)(end - begin);
     printf("static lib - %f\n", time_spent);
 
-    free_array(&dynamic_search_result);
-    free_array(&static_search_result);
+    free_array(&search_result);
     free_array(&employee_list);
 
     return 0;

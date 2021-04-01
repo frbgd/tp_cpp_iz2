@@ -40,14 +40,14 @@ int search(employee_array *empl_list, employee_array *result) {
     int pipe_arr[processes_number][2];
 
     int* pid_list = malloc(processes_number * sizeof(int));
-    int pid = -1, status = 0;
+    int status = 0;
     for (int proc_idx = 0; proc_idx < processes_number; proc_idx++) {
         if (pipe(pipe_arr[proc_idx]) == -1){
             fprintf(stderr, "Failed to create pipe\n");
             return -1;
         }
 
-        pid = fork();
+        int pid = fork();
         if (pid < 0 ) {
             fprintf(stderr, "Failed to fork child\n");
             return -1;
