@@ -4,7 +4,6 @@ extern "C" {
 #include "../include/employee.h"
 }
 
-// TODO тесты для array
 TEST(array, Initializing) {
     employee_array t;
     size_t init_size = 20;
