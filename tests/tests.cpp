@@ -170,7 +170,7 @@ TEST(employees_reading, IncorrectFileReading) {
     int employees_number = 1000;
     init_array(&employee_list, employees_number);
     int read_result = read_employees_from_file(
-            const_cast<char*>("wrong_path"),
+            const_cast<char*>("test_data_invalid.bin"),
             employees_number,
             &employee_list);
     ASSERT_EQ(employee_list.used, 0);
