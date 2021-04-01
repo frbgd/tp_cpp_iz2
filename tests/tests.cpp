@@ -11,6 +11,8 @@ TEST(array, Initializing) {
     ASSERT_NE(t.array, nullptr);
     ASSERT_EQ(t.used, 0);
     ASSERT_EQ(t.size, init_size);
+
+    free_array(&t);
 }
 
 TEST(array, Inserting) {
@@ -41,6 +43,8 @@ TEST(array, Inserting) {
     ASSERT_STREQ(empl.second_name, arr.array[arr_used].second_name);
     ASSERT_EQ(empl.is_male, arr.array[arr_used].is_male);
     ASSERT_STREQ(empl.first_name, arr.array[arr_used].first_name);
+
+    free_array(&arr);
 }
 
 TEST(array, InsertingWithReassigning) {
@@ -65,6 +69,8 @@ TEST(array, InsertingWithReassigning) {
 
     ASSERT_EQ(arr.used, arr_used + 1);
     ASSERT_EQ(arr.size, arr_size * 2);
+
+    free_array(&arr);
 }
 
 TEST(array, Slicing) {
@@ -90,6 +96,9 @@ TEST(array, Slicing) {
 
     ASSERT_STREQ(input_arr.array[1].second_name, output_arr.array[0].second_name);
     ASSERT_EQ(output_arr.used, 2);
+
+    free_array(&output_arr);
+    free_array(&input_arr);
 }
 
 TEST(array, Free) {
@@ -138,6 +147,8 @@ TEST(employees_reading, CorrectFileReading) {
             &employee_list);
     ASSERT_NE(employee_list.used, 0);
     ASSERT_EQ(read_result, 0);
+
+    free_array(&employee_list);
 }
 
 TEST(employees_reading, IncorrectFileOpening) {
@@ -150,6 +161,8 @@ TEST(employees_reading, IncorrectFileOpening) {
             &employee_list);
     ASSERT_EQ(employee_list.used, 0);
     ASSERT_EQ(read_result, -1);
+
+    free_array(&employee_list);
 }
 
 TEST(employees_reading, IncorrectFileReading) {
@@ -162,6 +175,8 @@ TEST(employees_reading, IncorrectFileReading) {
             &employee_list);
     ASSERT_EQ(employee_list.used, 0);
     ASSERT_EQ(read_result, -1);
+
+    free_array(&employee_list);
 }
 
 TEST(employees, FirstPositionMinAgeEmployee) {
