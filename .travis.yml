@@ -31,4 +31,4 @@ jobs:
     - stage: memcheck
       name: "Memory checking"
       script:
-        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no -s ./stress_test
+        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./stress_test
