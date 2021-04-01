@@ -16,3 +16,24 @@ target_include_directories(EmployeeDynamic PUBLIC include)
 add_executable(stress_test tests/stress_test.c)
 target_link_libraries(stress_test EmployeeStatic)
 target_link_libraries(stress_test EmployeeDynamic ${CMAKE_DL_LIBS})
+
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDART_REQURED ON)
+set(CMAKE_CXX_FLAGS         "-Wall -Wno-unknown-pragmas -Wno-sign-compare -Woverloaded-virtual -Wwrite-strings -Wno-unused -Werror -Wpedantic")
+set(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+
+add_subdirectory(thirdparty/gtest)
+
+add_executable(static_lib_tests tests/tests.cpp)
+target_link_libraries(static_lib_tests EmployeeStatic)
+target_link_libraries(static_lib_tests gtest ${CMAKE_THREAD_LIBS_INIT})
+
+add_executable(dynamic_lib_tests tests/tests.cpp)
+target_link_libraries(dynamic_lib_tests EmployeeDynamic)
+target_link_libraries(dynamic_lib_tests gtest ${CMAKE_THREAD_LIBS_INIT})
+
+enable_testing()
+add_test(gtests ./static_lib_tests)
+add_test(gtests ./dynamic_lib_tests)
