@@ -9,8 +9,11 @@ addons:
       - cmake
       - cppcheck
       - valgrind
+      - python3
+      - python3-pip
 
 before_script:
+  - pip3 install cpplint
   - mkdir build && cd build
   - cmake ..
   - make
@@ -22,6 +25,8 @@ jobs:
       name: "Static analisys"
       script:
         - cppcheck --inconclusive --enable=all --language=c ../include/* ../src/*.c ../tests/*.c
+        - cppcheck --inconclusive --enable=all --language=c++ ../tests/*.cpp
+        - cpplint --headers=h --linelength=110 --filter=-runtime/int,-legal/copyright,-build/include_subdir,-build/include --extensions=cpp,h ../tests/*
 
     - stage: stress_test
       name: "Run stress test"
