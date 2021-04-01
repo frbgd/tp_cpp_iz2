@@ -54,11 +54,11 @@ int search(employee_array *empl_list, employee_array *result) {
         } else if (pid == 0) {
             close(pipe_arr[proc_idx][0]);
 
-            size_t start_proc_positions_idx = proc_positions_size * proc_idx;
             // профессии текущего процесса
             employee_array proc_positions;
             init_array(&proc_positions, proc_positions_size);
-            slice_array(&positions, &proc_positions, start_proc_positions_idx, proc_positions_size);
+            slice_array(&positions, &proc_positions, proc_positions_size * proc_idx,
+                        calculate_proc_result_len(proc_positions_size, proc_idx, processes_number, positions.used));
             // итоговый массив сотрудников процесса
             employee_array proc_result;
             init_array(&proc_result, proc_positions.used * 2);

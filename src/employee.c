@@ -21,11 +21,6 @@ void slice_array(employee_array *input, employee_array *output, size_t start_ind
     for(size_t i = start_index; i < start_index + size; i++) {
         insert_array(output, input->array[i]);
     }
-    if (input->used - start_index - size < size) {
-        for(size_t i = start_index + size; i < input->used; i++) {
-            insert_array(output, input->array[i]);
-        }
-    }
 }
 
 void free_array(employee_array *a) {
