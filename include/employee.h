@@ -1,6 +1,8 @@
 #ifndef TP_CPP_IZ2_EMPLOYEE_H
 #define TP_CPP_IZ2_EMPLOYEE_H
 
+#include <stdbool.h>
+
 #define POSITION_STR_LEN 16
 #define SECOND_NAME_STR_LEN 23
 #define FIRST_NAME_STR_LEN 16
@@ -18,7 +20,7 @@ struct employee {
     unsigned short work_experience;         // 2 байта
     unsigned salary;                        // 4 байта
     char second_name[SECOND_NAME_STR_LEN];  // 23 байта
-    _Bool is_male;                          // 1 байт
+    bool is_male;                           // 1 байт
     char first_name[FIRST_NAME_STR_LEN];    // 16 байт
 };                                          // 64 байта
 struct employee_array {
