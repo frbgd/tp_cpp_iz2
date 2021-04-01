@@ -95,3 +95,33 @@ void sort_by_second_name(employee_array *arr) {
         }
     }
 }
+
+employee find_min_age_employee(employee_array *empl_list, char *position) {
+    unsigned short min_age = INIT_MIN_AGE;
+    employee min_age_employee;
+
+    for (size_t employees_idx = 0; employees_idx < empl_list->used; employees_idx++) {
+        if (strcmp(empl_list->array[employees_idx].position, position) == 0
+            && empl_list->array[employees_idx].age < min_age) {
+
+            min_age_employee = empl_list->array[employees_idx];
+            min_age = min_age_employee.age;
+        }
+    }
+    return min_age_employee;
+}
+
+employee find_max_age_employee(employee_array *empl_list, char *position) {
+    unsigned short max_age = INIT_MAX_AGE;
+    employee max_age_employee;
+
+    for (size_t employees_idx = 0; employees_idx < empl_list->used; employees_idx++) {
+        if (strcmp(empl_list->array[employees_idx].position, position) == 0
+            && empl_list->array[employees_idx].age > max_age) {
+
+            max_age_employee = empl_list->array[employees_idx];
+            max_age = max_age_employee.age;
+        }
+    }
+    return max_age_employee;
+}

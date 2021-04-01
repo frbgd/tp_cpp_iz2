@@ -65,33 +65,11 @@ int search(employee_array *empl_list, employee_array *result) {
 
             for (size_t proc_positions_idx = 0; proc_positions_idx < proc_positions.used; proc_positions_idx++) {
                 // ищем самого молодого сотрудника для текущей профессии
-                unsigned short min_age = INIT_MIN_AGE;
-                employee min_age_employee;
-
-                for (size_t employees_idx = 0; employees_idx < empl_list->used; employees_idx++) {
-                    if (strcmp(empl_list->array[employees_idx].position,
-                               proc_positions.array[proc_positions_idx].position) == 0
-                        && empl_list->array[employees_idx].age < min_age) {
-
-                        min_age_employee = empl_list->array[employees_idx];
-                        min_age = min_age_employee.age;
-                    }
-                }
+                employee min_age_employee = find_min_age_employee(empl_list, proc_positions.array[proc_positions_idx].position);
                 insert_array(&proc_result, min_age_employee);
 
                 // ищем самого взрослого сотрудника для текущей профессии
-                unsigned short max_age = INIT_MAX_AGE;
-                employee max_age_employee;
-
-                for (size_t employees_idx = 0; employees_idx < empl_list->used; employees_idx++) {
-                    if (strcmp(empl_list->array[employees_idx].position,
-                               proc_positions.array[proc_positions_idx].position) == 0
-                        && empl_list->array[employees_idx].age > max_age) {
-
-                        max_age_employee = empl_list->array[employees_idx];
-                        max_age = max_age_employee.age;
-                    }
-                }
+                employee max_age_employee = find_max_age_employee(empl_list, proc_positions.array[proc_positions_idx].position);
                 insert_array(&proc_result, max_age_employee);
             }
 

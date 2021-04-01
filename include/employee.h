@@ -41,4 +41,7 @@ int match_position(employee_array *arr, char *target_position);
 void sort_by_second_name(employee_array *arr);
 int search(employee_array *empl_list, employee_array *result);
 
+employee find_min_age_employee(employee_array *empl_list, char *position);
+employee find_max_age_employee(employee_array *empl_list, char *position);
+
 #endif //TP_CPP_IZ2_EMPLOYEE_H
