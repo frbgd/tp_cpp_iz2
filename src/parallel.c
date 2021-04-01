@@ -6,16 +6,16 @@
 #include <unistd.h>
 #include "../include/employee.h"
 
-size_t calculate_proc_result_len(size_t proc_positions_size, size_t proc_idx, size_t processes_number, size_t positions_number) {
+size_t calculate_proc_positions_len(size_t proc_positions_size, size_t proc_idx, size_t processes_number, size_t positions_number) {
     size_t start_idx = proc_positions_size * proc_idx;
     size_t proc_result_len;
 
-    // в последнем процессе обрабатывалось больше профессий
+    // в последнем процессе обрабатываются оставшиеся профессии
     if (proc_idx == processes_number - 1) {
         size_t stop_idx = positions_number;
-        proc_result_len = (stop_idx - start_idx) * 2;
+        proc_result_len = (stop_idx - start_idx);
     } else {
-        proc_result_len = proc_positions_size * 2;
+        proc_result_len = proc_positions_size;
     }
 
     return proc_result_len;
@@ -58,7 +58,7 @@ int search(employee_array *empl_list, employee_array *result) {
             employee_array proc_positions;
             init_array(&proc_positions, proc_positions_size);
             slice_array(&positions, &proc_positions, proc_positions_size * proc_idx,
-                        calculate_proc_result_len(proc_positions_size, proc_idx, processes_number, positions.used));
+                        calculate_proc_positions_len(proc_positions_size, proc_idx, processes_number, positions.used));
             // итоговый массив сотрудников процесса
             employee_array proc_result;
             init_array(&proc_result, proc_positions.used * 2);
@@ -83,7 +83,7 @@ int search(employee_array *empl_list, employee_array *result) {
 
     // вычитываем результаты из pipe'ов
     for (int proc_idx = 0; proc_idx < processes_number; proc_idx++) {
-        size_t proc_result_len = calculate_proc_result_len(proc_positions_size, proc_idx, processes_number, positions.used);
+        size_t proc_result_len = calculate_proc_positions_len(proc_positions_size, proc_idx, processes_number, positions.used) * 2;
         employee proc_result[proc_result_len];
         read(pipe_arr[proc_idx][0], &proc_result, sizeof(employee) * proc_result_len);
         for (size_t i = 0; i < proc_result_len; i++) {
