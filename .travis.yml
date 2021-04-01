@@ -24,11 +24,22 @@ jobs:
         - cppcheck --inconclusive --enable=all --language=c ../include/* ../src/*.c ../tests/*.c
 
     - stage: stress_test
-      name: "Run stress_test"
+      name: "Run stress test"
       script:
         - ./stress_test
+
+    - stage: unit_tests
+      name: "Run unit tests"
+      script:
+        - ./static_lib_tests
+        - ./dynamic_lib_tests
 
     - stage: memcheck
       name: "Memory checking"
       script:
         - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./stress_test
+        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./static_lib_tests
+        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./dynamic_lib_tests
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
