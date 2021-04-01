@@ -187,19 +187,14 @@ TEST(employees, CorrectPositionEmployees) {
             const_cast<char*>("test_data1k.bin"),
             employees_number,
             &employee_list);
-    if (read_result != 0) {
-        ASSERT_TRUE(0);
-    }
+    ASSERT_EQ(read_result, 0);
 
     employee_array search_result;
     init_array(&search_result, ARRAY_INIT_SIZE);
 
     int result = search(&employee_list, &search_result);
-    if (result != 0) {
-        ASSERT_TRUE(0);
-    }
-
     ASSERT_EQ(result, 0);
+
     for (size_t i = 0; i < search_result.used; i++) {
         if (strcmp(search_result.array[i].position, const_cast<char*>("Programmer2")) == 0) {
             ASSERT_TRUE(
