@@ -198,25 +198,27 @@ TEST(employees, CorrectPositionEmployees) {
     for (size_t i = 0; i < search_result.used; i++) {
         if (strcmp(search_result.array[i].position, const_cast<char*>("Programmer2")) == 0) {
             ASSERT_TRUE(
-                    ((search_result.array[i].age == 20 )&&
-                            (strcmp(search_result.array[i].second_name, const_cast<char*>("Mikhailov-Ovsyannilov")) == 0))
+                    ((search_result.array[i].age == 20) &&
+                    (strcmp(search_result.array[i].second_name, const_cast<char*>("Mikhailov-Ovsyannilov"))
+                    == 0))
                     ||
-                            ((search_result.array[i].age == 88) &&
-                                    (strcmp(search_result.array[i].second_name, const_cast<char*>("Kiselev")) == 0)));
+                    ((search_result.array[i].age == 88) &&
+                    (strcmp(search_result.array[i].second_name, const_cast<char*>("Kiselev")) == 0)));
         } else if (strcmp(search_result.array[i].position, const_cast<char*>("Student2")) == 0) {
             ASSERT_TRUE(
                     ((search_result.array[i].age == 19) &&
-                            (strcmp(search_result.array[i].second_name, const_cast<char*>("Mikhailov-Ovsyannilov")) == 0))
+                    (strcmp(search_result.array[i].second_name, const_cast<char*>("Mikhailov-Ovsyannilov"))
+                    == 0))
                     ||
-                            ((search_result.array[i].age == 87) &&
-                                    (strcmp(search_result.array[i].second_name, const_cast<char*>("Dubrova")) == 0)));
+                    ((search_result.array[i].age == 87) &&
+                    (strcmp(search_result.array[i].second_name, const_cast<char*>("Dubrova")) == 0)));
         } else if (strcmp(search_result.array[i].position, const_cast<char*>("Psychologist3")) == 0) {
             ASSERT_TRUE(
                     ((search_result.array[i].age == 20) &&
-                            (strcmp(search_result.array[i].second_name, const_cast<char*>("Sorokin")) == 0))
+                    (strcmp(search_result.array[i].second_name, const_cast<char*>("Sorokin")) == 0))
                     ||
-                            ((search_result.array[i].age == 88) &&
-                                    (strcmp(search_result.array[i].second_name, const_cast<char*>("Pankratov")) == 0)));
+                    ((search_result.array[i].age == 88) &&
+                    (strcmp(search_result.array[i].second_name, const_cast<char*>("Pankratov")) == 0)));
         }
     }
 
@@ -241,7 +243,7 @@ TEST(employees, CorrectSecondNamesSort) {
     ASSERT_EQ(result, 0);
 
     for (int i = 0; i < search_result.used - 1; i++) {
-        ASSERT_TRUE(strcmp(search_result.array[i].second_name, search_result.array[i+1].second_name) <= 0);
+        ASSERT_LE(strcmp(search_result.array[i].second_name, search_result.array[i+1].second_name), 0);
     }
 
     free_array(&search_result);
