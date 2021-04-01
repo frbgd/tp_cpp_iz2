@@ -8,6 +8,7 @@ addons:
     packages:
       - cmake
       - cppcheck
+      - valgrind
 
 before_script:
   - mkdir build && cd build
@@ -26,3 +27,8 @@ jobs:
       name: "Run stress_test"
       script:
         - ./stress_test
+
+    - stage: memcheck
+      name: "Memory checking"
+      script:
+        - valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no -s ./stress_test

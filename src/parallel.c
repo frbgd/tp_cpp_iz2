@@ -39,8 +39,6 @@ int search(employee_array *empl_list, employee_array *result) {
     // готовим массив pipe'ов
     int pipe_arr[processes_number][2];
 
-    int* pid_list = malloc(processes_number * sizeof(int));
-    int status = 0;
     for (int proc_idx = 0; proc_idx < processes_number; proc_idx++) {
         if (pipe(pipe_arr[proc_idx]) == -1){
             fprintf(stderr, "Failed to create pipe\n");
@@ -53,7 +51,6 @@ int search(employee_array *empl_list, employee_array *result) {
             return -1;
         } else if (pid > 0) {
             close(pipe_arr[proc_idx][1]);
-            pid_list[proc_idx] = pid;
         } else if (pid == 0) {
             close(pipe_arr[proc_idx][0]);
 
@@ -114,14 +111,7 @@ int search(employee_array *empl_list, employee_array *result) {
         for (size_t i = 0; i < proc_result_len; i++) {
             insert_array(result, proc_result[i]);
         }
-        // сразу же завершаем дочерний процесс
-        pid_t waited_pid = waitpid(pid_list[processes_number], &status, WNOHANG);
-        if (waited_pid < 0) {
-            fprintf(stderr, "Failed to wait child\n");
-            return -1;
-        }
     }
-    free(pid_list);
 
     sort_by_second_name(result);
     free_array(&positions);
