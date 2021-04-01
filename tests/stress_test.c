@@ -16,7 +16,7 @@ int main() {
         return 1;
     }
 
-    struct employee_array search_result;
+    employee_array search_result;
     init_array(&search_result, ARRAY_INIT_SIZE);
 
     // from dynamic library
