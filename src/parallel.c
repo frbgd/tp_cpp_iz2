@@ -6,7 +6,10 @@
 #include <unistd.h>
 #include "../include/employee.h"
 
-size_t calculate_proc_positions_len(size_t proc_positions_size, size_t proc_idx, size_t processes_number, size_t positions_number) {
+size_t calculate_proc_positions_len(size_t proc_positions_size,
+                                    size_t proc_idx,
+                                    size_t processes_number,
+                                    size_t positions_number) {
     size_t start_idx = proc_positions_size * proc_idx;
     size_t proc_result_len;
 
@@ -31,7 +34,8 @@ int search(employee_array *empl_list, employee_array *result) {
         }
     }
 
-    // параллелим алгоритм по количеству процессов в системе, каждый процесс будет искать самого взрослого и молодого
+    // параллелим алгоритм по количеству процессов в системе,
+    // каждый процесс будет искать самого взрослого и молодого
     // сотрудника в определенных профессиях
     int processes_number = get_nprocs();
     // количество профессий в каждом процессе
@@ -40,13 +44,13 @@ int search(employee_array *empl_list, employee_array *result) {
     int pipe_arr[processes_number][2];
 
     for (int proc_idx = 0; proc_idx < processes_number; proc_idx++) {
-        if (pipe(pipe_arr[proc_idx]) == -1){
+        if (pipe(pipe_arr[proc_idx]) == -1) {
             fprintf(stderr, "Failed to create pipe\n");
             return -1;
         }
 
         int pid = fork();
-        if (pid < 0 ) {
+        if (pid < 0) {
             fprintf(stderr, "Failed to fork child\n");
             return -1;
         } else if (pid > 0) {
@@ -54,22 +58,33 @@ int search(employee_array *empl_list, employee_array *result) {
         } else if (pid == 0) {
             close(pipe_arr[proc_idx][0]);
 
-            // профессии текущего процесса
+            // профессии, среди которых ищет текущий процесс
             employee_array proc_positions;
             init_array(&proc_positions, proc_positions_size);
-            slice_array(&positions, &proc_positions, proc_positions_size * proc_idx,
-                        calculate_proc_positions_len(proc_positions_size, proc_idx, processes_number, positions.used));
-            // итоговый массив сотрудников процесса
+            slice_array(&positions,
+                        &proc_positions,
+                        proc_positions_size * proc_idx,
+                        calculate_proc_positions_len(proc_positions_size,
+                                                     proc_idx,
+                                                     processes_number,
+                                                     positions.used));
+            // массив найденных сотрудников
             employee_array proc_result;
             init_array(&proc_result, proc_positions.used * 2);
 
-            for (size_t proc_positions_idx = 0; proc_positions_idx < proc_positions.used; proc_positions_idx++) {
+            for (
+                    size_t proc_positions_idx = 0;
+                    proc_positions_idx < proc_positions.used;
+                    proc_positions_idx++
+                ) {
                 // ищем самого молодого сотрудника для текущей профессии
-                employee min_age_employee = find_min_age_employee(empl_list, proc_positions.array[proc_positions_idx].position);
+                employee min_age_employee =
+                        find_min_age_employee(empl_list, proc_positions.array[proc_positions_idx].position);
                 insert_array(&proc_result, min_age_employee);
 
                 // ищем самого взрослого сотрудника для текущей профессии
-                employee max_age_employee = find_max_age_employee(empl_list, proc_positions.array[proc_positions_idx].position);
+                employee max_age_employee =
+                        find_max_age_employee(empl_list, proc_positions.array[proc_positions_idx].position);
                 insert_array(&proc_result, max_age_employee);
             }
 
@@ -83,7 +98,12 @@ int search(employee_array *empl_list, employee_array *result) {
 
     // вычитываем результаты из pipe'ов
     for (int proc_idx = 0; proc_idx < processes_number; proc_idx++) {
-        size_t proc_result_len = calculate_proc_positions_len(proc_positions_size, proc_idx, processes_number, positions.used) * 2;
+        // каждый процесс отдает число сотрудников,
+        // равное удвоенному число обрабатываемых процессом должностей
+        size_t proc_result_len = calculate_proc_positions_len(proc_positions_size,
+                                                              proc_idx,
+                                                              processes_number,
+                                                              positions.used) * 2;
         employee proc_result[proc_result_len];
         read(pipe_arr[proc_idx][0], &proc_result, sizeof(employee) * proc_result_len);
         for (size_t i = 0; i < proc_result_len; i++) {

@@ -21,8 +21,8 @@ before_script:
 
 jobs:
   include:
-    - stage: static_analisys
-      name: "Static analisys"
+    - stage: static_analysys
+      name: "Static analysis"
       script:
         - cppcheck --inconclusive --enable=all --language=c ../include/* ../src/*.c ../tests/*.c
         - cppcheck --inconclusive --enable=all --language=c++ ../tests/*.cpp

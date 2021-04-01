@@ -18,7 +18,7 @@ void insert_array(employee_array *a, employee element) {
 }
 
 void slice_array(employee_array *input, employee_array *output, size_t start_index, size_t size) {
-    for(size_t i = start_index; i < start_index + size; i++) {
+    for (size_t i = start_index; i < start_index + size; i++) {
         insert_array(output, input->array[i]);
     }
 }
@@ -58,7 +58,7 @@ int read_employees_from_file(char *file_name, int employees_number, employee_arr
     }
 
     fseek(f, FILE_HEADER_SIZE, SEEK_SET);
-    for(int i = 0; i < employees_number; i++) {
+    for (int i = 0; i < employees_number; i++) {
         employee emp;
         if (fread(&emp, sizeof(employee), 1, f) != 1) {
             fprintf(stderr, "Failed to read employees\n");
@@ -103,7 +103,6 @@ employee find_min_age_employee(employee_array *empl_list, char *position) {
     for (size_t employees_idx = 0; employees_idx < empl_list->used; employees_idx++) {
         if (strcmp(empl_list->array[employees_idx].position, position) == 0
             && empl_list->array[employees_idx].age < min_age) {
-
             min_age_employee = empl_list->array[employees_idx];
             min_age = min_age_employee.age;
         }
@@ -118,7 +117,6 @@ employee find_max_age_employee(employee_array *empl_list, char *position) {
     for (size_t employees_idx = 0; employees_idx < empl_list->used; employees_idx++) {
         if (strcmp(empl_list->array[employees_idx].position, position) == 0
             && empl_list->array[employees_idx].age > max_age) {
-
             max_age_employee = empl_list->array[employees_idx];
             max_age = max_age_employee.age;
         }

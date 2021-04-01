@@ -1,5 +1,5 @@
-#ifndef TP_CPP_IZ2_EMPLOYEE_H
-#define TP_CPP_IZ2_EMPLOYEE_H
+#ifndef INCLUDE_EMPLOYEE_H_
+#define INCLUDE_EMPLOYEE_H_
 
 #include <stdbool.h>
 
@@ -46,4 +46,4 @@ int search(employee_array *empl_list, employee_array *result);
 employee find_min_age_employee(employee_array *empl_list, char *position);
 employee find_max_age_employee(employee_array *empl_list, char *position);
 
-#endif //TP_CPP_IZ2_EMPLOYEE_H
+#endif  // INCLUDE_EMPLOYEE_H_
