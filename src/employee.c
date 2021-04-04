@@ -99,7 +99,11 @@ int match_position(employee_array *arr, char *target_position) {
     return 0;
 }
 
-void sort_by_second_name(employee_array *arr) {
+int sort_by_second_name(employee_array *arr) {
+    if (arr == NULL) {
+        return -1;
+    }
+
     employee temp;
 
     for (size_t i = 0; i < arr->used; i++) {
@@ -111,6 +115,8 @@ void sort_by_second_name(employee_array *arr) {
             }
         }
     }
+
+    return 0;
 }
 
 employee find_min_age_employee(employee_array *empl_list, char *position) {

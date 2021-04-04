@@ -38,7 +38,7 @@ int read_employees_number_from_file(const char *file_name);
 int read_employees_from_file(const char *file_name, const int employees_number, employee_array *arr);
 
 int match_position(employee_array *arr, char *target_position);
-void sort_by_second_name(employee_array *arr);
+int sort_by_second_name(employee_array *arr);
 int search(employee_array *empl_list, employee_array *result);
 
 employee find_min_age_employee(employee_array *empl_list, char *position);

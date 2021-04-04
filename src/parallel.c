@@ -114,7 +114,9 @@ int search(employee_array *empl_list, employee_array *result) {
         }
     }
 
-    sort_by_second_name(result);
+    if (sort_by_second_name(result) == -1) {
+        return -1;
+    }
     free_array(&positions);
 
     return 0;
