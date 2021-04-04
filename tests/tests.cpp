@@ -7,12 +7,18 @@ extern "C" {
 TEST(array, Initializing) {
     employee_array t;
     size_t init_size = 20;
-    init_array(&t, init_size);
+    int result = init_array(&t, init_size);
+    ASSERT_EQ(result, 0);
     ASSERT_NE(t.array, nullptr);
     ASSERT_EQ(t.used, 0);
     ASSERT_EQ(t.size, init_size);
 
     free_array(&t);
+}
+
+TEST(array, NullArrInitializing) {
+    int result = init_array(NULL, 2);
+    ASSERT_EQ(result, -1);
 }
 
 TEST(array, Inserting) {
@@ -32,8 +38,9 @@ TEST(array, Inserting) {
             true,
             "Aleksey"
     };
-    insert_array(&arr, empl);
+    int result = insert_array(&arr, empl);
 
+    ASSERT_EQ(result, 0);
     ASSERT_EQ(arr.used, arr_used + 1);
     ASSERT_EQ(arr.size, arr_size);
     ASSERT_STREQ(empl.position, arr.array[arr_used].position);
@@ -45,6 +52,20 @@ TEST(array, Inserting) {
     ASSERT_STREQ(empl.first_name, arr.array[arr_used].first_name);
 
     free_array(&arr);
+}
+
+TEST(array, NullArrInsertings) {
+    employee empl = {
+            "Junior Python",
+            23,
+            3,
+            85000,
+            "Kucheryavenko",
+            true,
+            "Aleksey"
+    };
+    int result = insert_array(NULL, empl);
+    ASSERT_EQ(result, -1);
 }
 
 TEST(array, InsertingWithReassigning) {
@@ -92,13 +113,19 @@ TEST(array, Slicing) {
 
     employee_array output_arr;
     init_array(&output_arr, init_size);
-    slice_array(&input_arr, &output_arr, 1, 2);
+    int result = slice_array(&input_arr, &output_arr, 1, 2);
 
+    ASSERT_EQ(result, 0);
     ASSERT_STREQ(input_arr.array[1].second_name, output_arr.array[0].second_name);
     ASSERT_EQ(output_arr.used, 2);
 
     free_array(&output_arr);
     free_array(&input_arr);
+}
+
+TEST(array, NullArrSlicing) {
+    int result = slice_array(NULL, NULL, 1, 2);
+    ASSERT_EQ(result, -1);
 }
 
 TEST(array, Free) {
@@ -116,10 +143,16 @@ TEST(array, Free) {
     };
     insert_array(&arr, empl);
 
-    free_array(&arr);
+    int result = free_array(&arr);
+    ASSERT_EQ(result, 0);
     ASSERT_EQ(arr.array, nullptr);
     ASSERT_EQ(arr.used, 0);
     ASSERT_EQ(arr.size, 0);
+}
+
+TEST(array, NullArrFree) {
+    int result = free_array(NULL);
+    ASSERT_EQ(result, -1);
 }
 
 TEST(number_reading, CorrectFileReading) {

@@ -3,30 +3,56 @@
 #include <string.h>
 #include "../include/employee.h"
 
-void init_array(employee_array *a, size_t initial_size) {
+int init_array(employee_array *a, size_t initial_size) {
+    if (a == NULL) {
+        return -1;
+    }
+
     a->array = malloc(initial_size * sizeof(employee));
     a->used = 0;
     a->size = initial_size;
+
+    return 0;
 }
 
-void insert_array(employee_array *a, employee element) {
+int insert_array(employee_array *a, employee element) {
+    if (a == NULL) {
+        return -1;
+    }
+
     if (a->used == a->size) {
         a->size *= 2;
         a->array = realloc(a->array, a->size * sizeof(employee));
     }
     a->array[a->used++] = element;
+
+    return 0;
 }
 
-void slice_array(employee_array *input, employee_array *output, size_t start_index, size_t size) {
-    for (size_t i = start_index; i < start_index + size; i++) {
-        insert_array(output, input->array[i]);
+int slice_array(employee_array *input, employee_array *output, size_t start_index, size_t size) {
+    if (input == NULL || output == NULL) {
+        return -1;
     }
+
+    for (size_t i = start_index; i < start_index + size; i++) {
+        if (insert_array(output, input->array[i]) == -1) {
+            return -1;
+        }
+    }
+
+    return 0;
 }
 
-void free_array(employee_array *a) {
+int free_array(employee_array *a) {
+    if (a == NULL) {
+        return -1;
+    }
+
     free(a->array);
     a->array = NULL;
     a->used = a->size = 0;
+
+    return 0;
 }
 
 int read_employees_number_from_file(const char *file_name) {
@@ -78,7 +104,9 @@ int read_employees_from_file(const char *file_name, const int employees_number, 
             fprintf(stderr, "Failed to read employees\n");
             return -1;
         }
-        insert_array(arr, emp);
+        if (insert_array(arr, emp) == -1) {
+            return -1;
+        }
     }
 
     if (fclose(f)) {

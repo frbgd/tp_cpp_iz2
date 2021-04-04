@@ -11,13 +11,17 @@ int main() {
         return 1;
     }
     employee_array employee_list;
-    init_array(&employee_list, employees_number);
+    if (init_array(&employee_list, employees_number) == -1) {
+        return -1;
+    }
     if (read_employees_from_file(file_name, employees_number, &employee_list) != 0) {
         return 1;
     }
 
     employee_array search_result;
-    init_array(&search_result, ARRAY_INIT_SIZE);
+    if (init_array(&search_result, ARRAY_INIT_SIZE) == -1) {
+        return -1;
+    }
 
     // from dynamic library
     void *ext_library;
@@ -40,8 +44,12 @@ int main() {
     double time_spent = (double)(end - begin);
     printf("dynamic lib - %f\n", time_spent);
 
-    free_array(&search_result);
-    init_array(&search_result, ARRAY_INIT_SIZE);
+    if (free_array(&search_result) == -1) {
+        return -1;
+    }
+    if (init_array(&search_result, ARRAY_INIT_SIZE) == -1) {
+        return -1;
+    }
 
     // from static library
     begin = clock();
@@ -52,8 +60,12 @@ int main() {
     time_spent = (double)(end - begin);
     printf("static lib - %f\n", time_spent);
 
-    free_array(&search_result);
-    free_array(&employee_list);
+    if (free_array(&search_result) == -1) {
+        return -1;
+    }
+    if (free_array(&employee_list) == -1) {
+        return -1;
+    }
 
     return 0;
 }

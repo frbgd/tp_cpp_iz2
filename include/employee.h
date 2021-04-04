@@ -29,10 +29,10 @@ typedef struct {
     size_t size;
 } employee_array;
 
-void init_array(employee_array *a, size_t initial_size);
-void insert_array(employee_array *a, employee element);
-void slice_array(employee_array *input, employee_array *output, size_t start_index, size_t size);
-void free_array(employee_array *a);
+int init_array(employee_array *a, size_t initial_size);
+int insert_array(employee_array *a, employee element);
+int slice_array(employee_array *input, employee_array *output, size_t start_index, size_t size);
+int free_array(employee_array *a);
 
 int read_employees_number_from_file(const char *file_name);
 int read_employees_from_file(const char *file_name, const int employees_number, employee_array *arr);
