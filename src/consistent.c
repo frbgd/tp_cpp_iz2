@@ -6,8 +6,11 @@ int search(employee_array *empl_list, employee_array *result) {
     employee_array positions;
     init_array(&positions, ARRAY_INIT_SIZE);
     for (size_t empl_idx = 0; empl_idx < empl_list->used; empl_idx++) {
-        if (match_position(&positions, empl_list->array[empl_idx].position) == 0) {
+        int match = match_position(&positions, empl_list->array[empl_idx].position);
+        if (match == 0) {
             insert_array(&positions, empl_list->array[empl_idx]);
+        } else if (match == -1) {
+            return -1;
         }
     }
 

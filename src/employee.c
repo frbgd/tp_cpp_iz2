@@ -89,6 +89,9 @@ int read_employees_from_file(const char *file_name, const int employees_number, 
 }
 
 int match_position(employee_array *arr, char *target_position) {
+    if (arr == NULL || target_position == NULL) {
+        return -1;
+    }
     for (size_t i = 0; i < arr->used; i++) {
         if (strcmp(arr->array[i].position, target_position) == 0)
             return 1;
