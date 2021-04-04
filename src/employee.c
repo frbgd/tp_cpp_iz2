@@ -29,7 +29,12 @@ void free_array(employee_array *a) {
     a->used = a->size = 0;
 }
 
-int read_employees_number_from_file(char *file_name) {
+int read_employees_number_from_file(const char *file_name) {
+    if (file_name == NULL) {
+        fprintf(stderr, "NULL file_name\n");
+        return -1;
+    }
+
     FILE *f = fopen(file_name, "rb");
     if (!f) {
         fprintf(stderr, "Failed to open file for read\n");
@@ -50,7 +55,16 @@ int read_employees_number_from_file(char *file_name) {
     return employees_number;
 }
 
-int read_employees_from_file(char *file_name, int employees_number, employee_array *arr) {
+int read_employees_from_file(const char *file_name, const int employees_number, employee_array *arr) {
+    if (file_name == NULL) {
+        fprintf(stderr, "NULL file_name\n");
+        return -1;
+    }
+    if (arr == NULL) {
+        fprintf(stderr, "NULL arr\n");
+        return -1;
+    }
+
     FILE *f = fopen(file_name, "rb");
     if (!f) {
         fprintf(stderr, "Failed to open file for read\n");

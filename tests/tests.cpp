@@ -127,6 +127,11 @@ TEST(number_reading, CorrectFileReading) {
     ASSERT_NE(employees_number, -1);
 }
 
+TEST(number_reading, NullFileName) {
+    int employees_number = read_employees_number_from_file(nullptr);
+    ASSERT_EQ(employees_number, -1);
+}
+
 TEST(number_reading, IncorrectFileOpening) {
     int employees_number = read_employees_number_from_file(const_cast<char*>("wrong_path"));
     ASSERT_EQ(employees_number, -1);
@@ -149,6 +154,16 @@ TEST(employees_reading, CorrectFileReading) {
     ASSERT_EQ(read_result, 0);
 
     free_array(&employee_list);
+}
+
+TEST(employees_reading, NullFileName) {
+    int read_result = read_employees_from_file(nullptr, 10, nullptr);
+    ASSERT_EQ(read_result, -1);
+}
+
+TEST(employees_reading, NullArray) {
+    int read_result = read_employees_from_file("test", 10, nullptr);
+    ASSERT_EQ(read_result, -1);
 }
 
 TEST(employees_reading, IncorrectFileOpening) {
