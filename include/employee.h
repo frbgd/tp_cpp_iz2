@@ -14,7 +14,7 @@
 #define INIT_MIN_AGE 1000;
 #define INIT_MAX_AGE 0;
 
-struct employee {
+typedef struct {
     char position[POSITION_STR_LEN];        // 16 байт
     unsigned short age;                     // 2 байта
     unsigned short work_experience;         // 2 байта
@@ -22,14 +22,12 @@ struct employee {
     char second_name[SECOND_NAME_STR_LEN];  // 23 байта
     bool is_male;                           // 1 байт
     char first_name[FIRST_NAME_STR_LEN];    // 16 байт
-};                                          // 64 байта
-struct employee_array {
-    struct employee *array;
+} employee;                                 // 64 байта
+typedef struct {
+    employee *array;
     size_t used;
     size_t size;
-};
-typedef struct employee employee;
-typedef struct employee_array employee_array;
+} employee_array;
 
 void init_array(employee_array *a, size_t initial_size);
 void insert_array(employee_array *a, employee element);
