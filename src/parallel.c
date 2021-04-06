@@ -106,6 +106,7 @@ int search(employee_array *empl_list, employee_array *result) {
                 if (insert_array(&proc_result, *min_age_employee) == -1) {
                     exit(-1);
                 }
+                free(min_age_employee);
 
                 // ищем самого взрослого сотрудника для текущей профессии
                 employee *max_age_employee = malloc(sizeof(employee));
@@ -116,6 +117,7 @@ int search(employee_array *empl_list, employee_array *result) {
                 if (insert_array(&proc_result, *max_age_employee) == -1) {
                     exit(-1);
                 }
+                free(max_age_employee);
             }
 
             write(pipe_arr[proc_idx][1], (employee *)proc_result.array, sizeof(employee) * proc_result.used);
