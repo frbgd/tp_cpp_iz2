@@ -11,7 +11,6 @@
 
 #define FILE_HEADER_SIZE 16
 
-#define INIT_MIN_AGE 1000;
 #define INIT_MAX_AGE 0;
 
 typedef struct {
@@ -41,7 +40,7 @@ int match_position(employee_array *arr, char *target_position);
 int sort_by_second_name(employee_array *arr);
 int search(employee_array *empl_list, employee_array *result);
 
-employee find_min_age_employee(employee_array *empl_list, char *position);
-employee find_max_age_employee(employee_array *empl_list, char *position);
+int find_min_age_employee(employee_array *empl_list, char *position, employee *output_empl);
+int find_max_age_employee(employee_array *empl_list, char *position, employee *output_empl);
 
 #endif  // INCLUDE_EMPLOYEE_H_

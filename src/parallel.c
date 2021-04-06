@@ -98,16 +98,22 @@ int search(employee_array *empl_list, employee_array *result) {
                     proc_positions_idx++
                 ) {
                 // ищем самого молодого сотрудника для текущей профессии
-                employee min_age_employee =
-                        find_min_age_employee(empl_list, proc_positions.array[proc_positions_idx].position);
-                if (insert_array(&proc_result, min_age_employee) == -1) {
+                employee *min_age_employee = malloc(sizeof(employee));
+                if (find_min_age_employee(empl_list,
+                                          proc_positions.array[proc_positions_idx].position, min_age_employee) != 0) {
+                    exit(-1);
+                }
+                if (insert_array(&proc_result, *min_age_employee) == -1) {
                     exit(-1);
                 }
 
                 // ищем самого взрослого сотрудника для текущей профессии
-                employee max_age_employee =
-                        find_max_age_employee(empl_list, proc_positions.array[proc_positions_idx].position);
-                if (insert_array(&proc_result, max_age_employee) == -1) {
+                employee *max_age_employee = malloc(sizeof(employee));
+                if(find_max_age_employee(empl_list,
+                                         proc_positions.array[proc_positions_idx].position, max_age_employee) != 0) {
+                    exit(-1);
+                }
+                if (insert_array(&proc_result, *max_age_employee) == -1) {
                     exit(-1);
                 }
             }

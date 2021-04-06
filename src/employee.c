@@ -147,30 +147,41 @@ int sort_by_second_name(employee_array *arr) {
     return 0;
 }
 
-employee find_min_age_employee(employee_array *empl_list, char *position) {
-    unsigned short min_age = INIT_MIN_AGE;
-    employee min_age_employee;
+int find_min_age_employee(employee_array *empl_list, char *position, employee *output_empl) {
+    if (empl_list == NULL || position == NULL || output_empl == NULL) {
+        return -1;
+    }
+    size_t min_age_employee_idx = 0;
+    unsigned short min_age = empl_list->array[min_age_employee_idx].age;
 
-    for (size_t employees_idx = 0; employees_idx < empl_list->used; employees_idx++) {
+    for (size_t employees_idx = 1; employees_idx < empl_list->used; employees_idx++) {
         if (strcmp(empl_list->array[employees_idx].position, position) == 0
             && empl_list->array[employees_idx].age < min_age) {
-            min_age_employee = empl_list->array[employees_idx];
-            min_age = min_age_employee.age;
+            min_age_employee_idx = employees_idx;
+            min_age = empl_list->array[min_age_employee_idx].age;
         }
     }
-    return min_age_employee;
+
+    *output_empl = empl_list->array[min_age_employee_idx];
+    return 0;
 }
 
-employee find_max_age_employee(employee_array *empl_list, char *position) {
-    unsigned short max_age = INIT_MAX_AGE;
-    employee max_age_employee;
+int find_max_age_employee(employee_array *empl_list, char *position, employee *output_empl) {
+    if (empl_list == NULL || position == NULL || output_empl == NULL) {
+        return -1;
+    }
+    size_t max_age_employee_idx = 0;
+    unsigned short max_age = empl_list->array[max_age_employee_idx].age;
 
-    for (size_t employees_idx = 0; employees_idx < empl_list->used; employees_idx++) {
+    for (size_t employees_idx = 1; employees_idx < empl_list->used; employees_idx++) {
         if (strcmp(empl_list->array[employees_idx].position, position) == 0
             && empl_list->array[employees_idx].age > max_age) {
-            max_age_employee = empl_list->array[employees_idx];
-            max_age = max_age_employee.age;
+
+            max_age_employee_idx = employees_idx;
+            max_age = empl_list->array[max_age_employee_idx].age;
         }
     }
-    return max_age_employee;
+
+    *output_empl = empl_list->array[max_age_employee_idx];
+    return 0;
 }

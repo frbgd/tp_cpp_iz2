@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include "../include/employee.h"
 
 int search(employee_array *empl_list, employee_array *result) {
@@ -20,15 +21,21 @@ int search(employee_array *empl_list, employee_array *result) {
 
     // для каждой профессии ищем минимальный возраст
     for (size_t positions_idx = 0; positions_idx < positions.used; positions_idx++) {
-        employee min_age_employee = find_min_age_employee(empl_list, positions.array[positions_idx].position);
-        if (insert_array(result, min_age_employee) == -1) {
+        employee *min_age_employee = malloc(sizeof(employee));
+        if (find_min_age_employee(empl_list, positions.array[positions_idx].position, min_age_employee) != 0) {
+            return -1;
+        }
+        if (insert_array(result, *min_age_employee) == -1) {
             return -1;
         }
     }
     // для каждой профессии ищем максимальный возраст
     for (size_t positions_idx = 0; positions_idx < positions.used; positions_idx++) {
-        employee max_age_employee = find_max_age_employee(empl_list, positions.array[positions_idx].position);
-        if (insert_array(result, max_age_employee) == -1) {
+        employee *max_age_employee = malloc(sizeof(employee));
+        if(find_max_age_employee(empl_list, positions.array[positions_idx].position, max_age_employee) != 0) {
+            return -1;
+        }
+        if (insert_array(result, *max_age_employee) == -1) {
             return -1;
         }
     }
