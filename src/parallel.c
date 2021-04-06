@@ -4,6 +4,8 @@
 #include <wait.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 #include "../include/employee.h"
 
 typedef struct {
@@ -49,41 +51,43 @@ int search(employee_array *empl_list, employee_array *result) {
     // каждый процесс будет искать самого взрослого и молодого
     // сотрудника в определенных профессиях
     int processes_number = get_nprocs();
+    int pid_arr[processes_number];
     // количество профессий в каждом процессе
     size_t proc_positions_size = positions.used / processes_number;
-    // готовим массив pipe'ов
-    int pipe_arr[processes_number][2];
+    // создаем shared memory, в который процессы запишут мин и макс. возрастных сотрудников для каждой профессии
+    int shmid = shmget(IPC_PRIVATE, sizeof(employee) * positions.used * 2, 0644|IPC_CREAT);
+    if (shmid == -1) {
+        fprintf(stderr, "Failed to create shared memory\n");
+        return -1;
+    }
 
     for (int proc_idx = 0; proc_idx < processes_number; proc_idx++) {
-        if (pipe(pipe_arr[proc_idx]) == -1) {
-            fprintf(stderr, "Failed to create pipe\n");
-            return -1;
-        }
-
         int pid = fork();
         if (pid < 0) {
             fprintf(stderr, "Failed to fork child\n");
             return -1;
         } else if (pid > 0) {
-            close(pipe_arr[proc_idx][1]);
+            // заполняем массив pid'ов, чтобы потом ждать их завершения
+            pid_arr[proc_idx] = pid;
         } else if (pid == 0) {
-            close(pipe_arr[proc_idx][0]);
-
             // профессии, среди которых ищет текущий процесс
             employee_array proc_positions;
             if (init_array(&proc_positions, proc_positions_size) == -1) {
                 exit(-1);
             }
+            // рассчитываем количество профессий, обрабатываемых текущим процессом
             position_info info = {
                     proc_positions_size,
                     proc_idx,
                     processes_number,
                     positions.used
             };
+            size_t proc_position_len = calculate_proc_positions_len(info);
+            // получаем список профессий, обрабатываемых текущим процессом
             if (slice_array(&positions,
                             &proc_positions,
                             proc_positions_size * proc_idx,
-                            calculate_proc_positions_len(info)) == -1 ) {
+                            proc_position_len) == -1 ) {
                 return -1;
             }
             // массив найденных сотрудников
@@ -91,7 +95,7 @@ int search(employee_array *empl_list, employee_array *result) {
             if (init_array(&proc_result, proc_positions.used * 2) == -1) {
                 exit(-1);
             }
-
+            // итерируемся по профессиям
             for (
                     size_t proc_positions_idx = 0;
                     proc_positions_idx < proc_positions.used;
@@ -120,7 +124,21 @@ int search(employee_array *empl_list, employee_array *result) {
                 free(max_age_employee);
             }
 
-            write(pipe_arr[proc_idx][1], (employee *)proc_result.array, sizeof(employee) * proc_result.used);
+            // записываем полученных сотрудников в shared memory
+            employee *shm_empl = (employee*)shmat(shmid, NULL, 0);
+            if (shm_empl == (void *) -1) {
+                fprintf(stderr, "Failed to attach shared memory\n");
+                exit(-1);
+            }
+            // позиция начала списка сотрудников текущего процесса в shared memory
+            size_t shared_memory_start_idx = proc_positions_size * proc_idx * 2;
+            for (size_t i = 0; i < proc_result.used; i++) {
+                shm_empl[shared_memory_start_idx + i] = proc_result.array[i];
+            }
+            if (shmdt(shm_empl) == -1) {
+                fprintf(stderr, "Failed to detach shared memory\n");
+                return -1;
+            }
 
             if (free_array(&proc_result) == -1) {
                 exit(-1);
@@ -132,25 +150,31 @@ int search(employee_array *empl_list, employee_array *result) {
         }
     }
 
-    // вычитываем результаты из pipe'ов
+    // дожидаемся завершения всех процессов
     for (int proc_idx = 0; proc_idx < processes_number; proc_idx++) {
-        // каждый процесс отдает число сотрудников,
-        // равное удвоенному число обрабатываемых процессом должностей
-
-        position_info info = {
-                proc_positions_size,
-                proc_idx,
-                processes_number,
-                positions.used
-        };
-        size_t proc_result_len = calculate_proc_positions_len(info) * 2;
-        employee proc_result[proc_result_len];
-        read(pipe_arr[proc_idx][0], &proc_result, sizeof(employee) * proc_result_len);
-        for (size_t i = 0; i < proc_result_len; i++) {
-            if (insert_array(result, proc_result[i]) == -1) {
-                return -1;
-            }
+        int proc_status;
+        waitpid(pid_arr[proc_idx], &proc_status, 0);
+        if (proc_status != 0) {
+            fprintf(stderr, "Error in child %d\n", pid_arr[proc_idx]);
+            return -1;
         }
+    }
+    // вычитываем данные из shared memory
+    employee *shm_empl = (employee*)shmat(shmid, NULL, 0);
+    if (shm_empl == (void *) -1) {
+        fprintf(stderr, "Failed to attach shared memory\n");
+        return -1;
+    }
+    for (size_t i = 0; i < positions.used * 2; i++) {
+        insert_array(result, shm_empl[i]);
+    }
+    if (shmdt(shm_empl) == -1) {
+        fprintf(stderr, "Failed to detach shared memory\n");
+        return -1;
+    }
+    if (shmctl(shmid, IPC_RMID, 0) == -1) {
+        fprintf(stderr, "Failed to destroy shared memory\n");
+        return -1;
     }
 
     if (sort_by_second_name(result) == -1) {
