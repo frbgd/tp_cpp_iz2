@@ -12,6 +12,6 @@ Telegram - @frbgd
 Результаты стресс-теста Travis CI (время работы функций):
 ```
 $ ./stress_test
-dynamic lib - 1551.000000
-static lib - 4449.000000
+dynamic lib - 1479.000000
+static lib - 6236.000000
 ```
